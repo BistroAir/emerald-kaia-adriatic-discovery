@@ -254,7 +254,14 @@
         name: 'Dubrovnik', region: 'Croatia', intro: 'A celebrated walled city of limestone streets, terracotta roofs and Adriatic views.',
         basics: [['Arrival', 'Cruise ships use Gruž harbor; the Old Town is several kilometers away.'], ['Currency', 'Euro (€) · Croatian is the local language.'], ['Old Town', 'Reach Pile Gate by local bus or taxi from Gruž.'], ['Getting Around', 'Walking, city bus, taxi and cable car.']],
         activities: [['City Walls', 'Allow around 1.5–2 hours; exposed sections have little shade.'], ['Stradun', 'Walk the limestone main street and explore side lanes.'], ['Lokrum Island', 'Short boat ride from the Old Port; check final return sailing.'], ['Mount Srđ', 'Cable car or road transfer for a wide view of the city.']],
-          transport: [['Split–Gruž by Krilo', 'About 4 hr 30–40 min via island stops · fares from €20. Seasonal route; verify the chosen sailing and return connection.'], ['Gruž to Pile Gate', 'Libertas city buses 1A/1B run from the harbor area; €2.50 onboard single ticket or €1.73 one-hour ticket. Check the live timetable and return traffic.'], ['Gruž–Elaphiti Islands', 'Jadrolinija line 831 takes about 1 hr to Lopud and 1 hr 20 min to Suđurađ; year-round service, with 2026 fares linked. Check the last return.'], ['Old Port–Lokrum', 'Short boat crossing; fare and departures vary by season. Confirm the last return before visiting.']],
+        transport: [['Gruž to Pile Gate', 'Libertas city buses 1A/1B run from the harbor area; €2.50 onboard single ticket or €1.73 one-hour ticket. Check the live timetable and allow for traffic.'], ['Old Port–Lokrum', 'Short boat crossing from the Old Port; fare and departures vary by season. Confirm the last return before visiting.']],
+        islandFerries: [
+          ['Line 807: Dubrovnik (Gruž) → Koločep → Lopud → Suđurađ (Šipan)', 'Jadrolinija passenger ship · Year-round service. Good for a full-day Elaphiti island visit; check the date-specific timetable, fare and final return sailing.'],
+          ['Line 831: Dubrovnik (Gruž) → Lopud → Suđurađ (Šipan)', 'Jadrolinija ferry · Year-round service. About 1 hr to Lopud and 1 hr 20 min to Suđurađ. Check the 2026 fare list and return options for your day.'],
+          ['Seasonal northbound catamaran: Dubrovnik → Mljet (Pomena) → Korčula → Hvar → Brač (Milna) → Split', 'Krilo route with island stops; exact route and operating dates vary by schedule period. Best treated as island-to-island transport, not a guaranteed same-day return trip from Dubrovnik. Check dates, fares and seat availability before planning.'],
+          ['Mljet via Sobra (alternative route)', 'Jadrolinija line 832 crosses from Prapratno on the Pelješac peninsula to Sobra in about 45 min. Prapratno is not in Dubrovnik: arrange a road transfer there and onward transport on Mljet. Check the ferry timetable and fare.'],
+          ['Lokrum from Dubrovnik Old Port', 'Frequent seasonal excursion boats serve this nearby island; check the day’s operating hours and last return at the Old Port.']
+        ],
         food: [['Black risotto', 'Cuttlefish-ink rice, common along the Dalmatian coast.'], ['Oysters', 'Try oysters from the nearby Bay of Mali Ston.'], ['Rozata', 'A chilled caramel custard dessert.'], ['Plavac Mali', 'A robust red wine from southern Dalmatia.']]
       },
       split: {
@@ -347,6 +354,11 @@
       ]
     };
 
+    officialSources.dubrovnik.push(
+      ['Jadrolinija line 832: Prapratno–Sobra (Mljet)', 'https://www.jadrolinija.hr/en/travel/prapratno_peljesac_-_sobra_mljet'],
+      ['Krilo seasonal route schedules', 'https://krilo.hr/en/schedule']
+    );
+
     const nav = document.getElementById('port-nav');
     const content = document.getElementById('port-content');
     const escapeHtml = value => String(value).replace(/[&<>"']/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char]);
@@ -387,6 +399,7 @@
           ${sectionMarkup('Ferries & Water Transport', port.transport)}
           ${sectionMarkup('Local Food & Drink', port.food)}
         </div>
+        ${port.islandFerries ? sectionMarkup('Island Ferries from Dubrovnik', port.islandFerries, 'island-ferries') : ''}
         <section class="essential" aria-labelledby="essential-title">
           <h3 id="essential-title">Essential Knowledge</h3>
           <ul class="card-list">${essentials.map(cardMarkup).join('')}</ul>
