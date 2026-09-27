@@ -134,6 +134,20 @@
     }
     .info-card strong { display: block; margin-bottom: 3px; font-size: .91rem; font-weight: 650; }
     .info-card span { display: block; color: var(--muted); font-size: .83rem; }
+    .place-info-link {
+      display: inline-flex;
+      align-items: center;
+      margin-top: 8px;
+      color: var(--green);
+      font-size: .8rem;
+      font-weight: 700;
+      text-decoration: none;
+      text-underline-offset: 3px;
+    }
+    .place-info-link:hover { text-decoration: underline; }
+    .place-info-link:focus-visible { outline: 2px solid var(--green); outline-offset: 3px; }
+    .port-map-link { white-space: nowrap; }
+    .port-actions { display: flex; flex-direction: column; align-items: flex-end; gap: 8px; }
     .basics-list { grid-template-columns: 1fr; }
     .bus-intro { max-width: 760px; margin: -12px 0 24px; color: var(--muted); }
     .bus-destination-list { display: grid; gap: 12px; margin: 0; padding: 0; list-style: none; }
@@ -163,6 +177,7 @@
       main { padding-top: 28px; }
       .port-heading { align-items: start; }
       .port-mark { display: none; }
+      .port-actions { align-items: flex-start; }
       .content-grid { grid-template-columns: 1fr; gap: 25px; }
       .card-list { grid-template-columns: 1fr; }
     }
@@ -393,8 +408,13 @@
     const nav = document.getElementById('port-nav');
     const content = document.getElementById('port-content');
     const escapeHtml = value => String(value).replace(/[&<>"']/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char]);
-    const cardMarkup = ([title, detail]) => `<li class="info-card"><strong>${escapeHtml(title)}</strong><span>${escapeHtml(detail)}</span></li>`;
-    const sectionMarkup = (title, entries, className = '') => `<section class="content-section ${className}"><h3>${escapeHtml(title)}</h3><ul class="card-list ${className === 'basics' ? 'basics-list' : ''}">${entries.map(cardMarkup).join('')}</ul></section>`;
+    const mapsSearchUrl = query => `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`;
+    const placeInfoLink = (query, label = 'Place information') => `<a class="place-info-link" href="${escapeHtml(mapsSearchUrl(query))}" target="_blank" rel="noopener noreferrer" aria-label="${escapeHtml(label)}: ${escapeHtml(query)}">ⓘ ${escapeHtml(label)}</a>`;
+    const cardMarkup = ([title, detail], options = {}) => {
+      const infoLink = options.linkPlaces ? placeInfoLink(`${title}, ${options.location}`) : '';
+      return `<li class="info-card"><strong>${escapeHtml(title)}</strong><span>${escapeHtml(detail)}</span>${infoLink}</li>`;
+    };
+    const sectionMarkup = (title, entries, className = '', options = {}) => `<section class="content-section ${className}"><h3>${escapeHtml(title)}</h3><ul class="card-list ${className === 'basics' ? 'basics-list' : ''}">${entries.map(entry => cardMarkup(entry, options)).join('')}</ul></section>`;
     const sourceMarkup = portId => `<section class="source-section" aria-labelledby="source-title"><h3 id="source-title">Official schedules, tickets & visitor information</h3><ul class="source-list">${officialSources[portId].map(([label, url]) => `<li><a href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(label)}</a></li>`).join('')}</ul><p class="source-note">Official links reviewed 27 September 2026. Timetables, fares and admission details change; confirm with the operator or venue for your travel date.</p></section>`;
 
     function renderPort(portId, updateUrl = true) {
@@ -423,13 +443,14 @@
         content.innerHTML = `
           <header class="port-heading">
             <div><p class="eyebrow">${escapeHtml(port.region)} · ${escapeHtml(port.name)}</p><h2>${escapeHtml(port.title)}</h2></div>
-            <span class="port-mark">Adriatic Discovery</span>
+            <div class="port-actions"><span class="port-mark">Adriatic Discovery</span>${placeInfoLink(`${port.name}, ${port.region}`, 'View on map')}</div>
           </header>
           <p class="bus-intro">${escapeHtml(port.intro)}</p>
           <section aria-label="Bus day-trip destinations">
             <ul class="bus-destination-list">${port.busDestinations.map(destination => `
               <li class="bus-destination">
                 <h3>${escapeHtml(destination.name)}</h3>
+                ${placeInfoLink(`${destination.name}, near Dubrovnik, Croatia`, 'Place information')}
                 <p class="bus-facts"><span><strong>Travel time:</strong> ${escapeHtml(destination.minutes)} min</span><span><strong>Distance:</strong> ${escapeHtml(destination.distance)}</span><span><strong>Bus line:</strong> ${escapeHtml(destination.lines)}</span><span><strong>Typical fare:</strong> ${escapeHtml(destination.fare)}</span></p>
                 <p><strong>Official schedule:</strong> <a href="${escapeHtml(port.busSchedule)}" target="_blank" rel="noopener noreferrer">Libertas Dubrovnik</a></p>
                 <p><strong>Why it’s great</strong></p>
@@ -446,15 +467,15 @@
       content.innerHTML = `
         <header class="port-heading">
           <div><p class="eyebrow">${escapeHtml(port.region)} · Port Guide</p><h2>${escapeHtml(port.name)}</h2><p>${escapeHtml(port.intro)}</p></div>
-          <span class="port-mark">Adriatic Discovery</span>
+          <div class="port-actions"><span class="port-mark">Adriatic Discovery</span>${placeInfoLink(`${port.name}, ${port.region}`, 'View on map')}</div>
         </header>
         <div class="content-grid">
           ${sectionMarkup('Port Basics', port.basics, 'basics')}
-          ${sectionMarkup('Top Things To Do', port.activities)}
+          ${sectionMarkup('Top Things To Do', port.activities, '', { linkPlaces: true, location: `${port.name}, ${port.region}` })}
           ${sectionMarkup('Ferries & Water Transport', port.transport)}
           ${sectionMarkup('Local Food & Drink', port.food)}
         </div>
-        ${port.islandFerries ? sectionMarkup('Island Ferries from Dubrovnik', port.islandFerries, 'island-ferries') : ''}
+        ${port.islandFerries ? sectionMarkup('Island Ferries from Dubrovnik', port.islandFerries, 'island-ferries', { linkPlaces: true, location: 'Dubrovnik, Croatia' }) : ''}
         <section class="essential" aria-labelledby="essential-title">
           <h3 id="essential-title">Essential Knowledge</h3>
           <ul class="card-list">${essentials.map(cardMarkup).join('')}</ul>
