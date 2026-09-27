@@ -411,9 +411,30 @@
     const mapsSearchUrl = query => `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`;
     const placeInfoLink = (query, label = 'Place information') => `<a class="place-info-link" href="${escapeHtml(mapsSearchUrl(query))}" target="_blank" rel="noopener noreferrer" aria-label="${escapeHtml(label)}: ${escapeHtml(query)}">ⓘ ${escapeHtml(label)}</a>`;
     const cardMarkup = ([title, detail], options = {}) => {
-      const infoLink = options.linkPlaces ? placeInfoLink(`${title}, ${options.location}`) : '';
-      return `<li class="info-card"><strong>${escapeHtml(title)}</strong><span>${escapeHtml(detail)}</span>${infoLink}</li>`;
-    };
+
+  let infoLink = '';
+
+  if (options.linkPlaces) {
+
+    const label =
+      options.category === 'food'
+        ? '🍽 Learn More'
+        : 'ⓘ Place Information';
+
+    infoLink = placeInfoLink(
+      `${title}, ${options.location}`,
+      label
+    );
+  }
+
+  return `
+    <li class="info-card">
+      <strong>${escapeHtml(title)}</strong>
+      <span>${escapeHtml(detail)}</span>
+      ${infoLink}
+    </li>
+  `;
+};
     const sectionMarkup = (title, entries, className = '', options = {}) => `<section class="content-section ${className}"><h3>${escapeHtml(title)}</h3><ul class="card-list ${className === 'basics' ? 'basics-list' : ''}">${entries.map(entry => cardMarkup(entry, options)).join('')}</ul></section>`;
     const sourceMarkup = portId => `<section class="source-section" aria-labelledby="source-title"><h3 id="source-title">Official schedules, tickets & visitor information</h3><ul class="source-list">${officialSources[portId].map(([label, url]) => `<li><a href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(label)}</a></li>`).join('')}</ul><p class="source-note">Official links reviewed 27 September 2026. Timetables, fares and admission details change; confirm with the operator or venue for your travel date.</p></section>`;
 
@@ -473,7 +494,16 @@
           ${sectionMarkup('Port Basics', port.basics, 'basics')}
           ${sectionMarkup('Top Things To Do', port.activities, '', { linkPlaces: true, location: `${port.name}, ${port.region}` })}
           ${sectionMarkup('Ferries & Water Transport', port.transport)}
-          ${sectionMarkup('Local Food & Drink', port.food)}
+          ${sectionMarkup(
+'Local Food & Drink',
+port.food,
+'',
+{
+linkPlaces: true,
+location: `${port.name}, ${port.region}`,
+category: 'food'
+}
+)}
         </div>
         ${port.islandFerries ? sectionMarkup('Island Ferries from Dubrovnik', port.islandFerries, 'island-ferries', { linkPlaces: true, location: 'Dubrovnik, Croatia' }) : ''}
         <section class="essential" aria-labelledby="essential-title">
