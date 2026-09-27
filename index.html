@@ -1,0 +1,425 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#081b20">
+  <title>Emerald Kaia · Adriatic Discovery</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --ink: #f2f5ef;
+      --muted: #afc0ba;
+      --navy: #081b20;
+      --navy-raised: #10282d;
+      --line: rgba(220, 238, 226, .15);
+      --green: #62d49b;
+      --green-deep: #163e32;
+      --gold: #e7c88a;
+      --serif: Georgia, 'Times New Roman', serif;
+      --sans: 'Aptos', 'Segoe UI', sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-width: 320px;
+      background: var(--navy);
+      color: var(--ink);
+      font-family: var(--sans);
+      line-height: 1.55;
+    }
+    .masthead {
+      padding: 34px clamp(20px, 6vw, 88px) 26px;
+      background: linear-gradient(115deg, #102b30 0%, #0b2024 58%, #17382e 100%);
+      border-bottom: 1px solid var(--line);
+    }
+    .masthead-inner, .nav-inner, main { max-width: 1240px; margin: 0 auto; }
+    .eyebrow {
+      margin: 0 0 8px;
+      color: var(--green);
+      font-size: .72rem;
+      font-weight: 700;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+    }
+    h1 {
+      margin: 0;
+      font-family: var(--serif);
+      font-size: clamp(2rem, 4vw, 3.3rem);
+      font-weight: 500;
+      line-height: 1.12;
+    }
+    .subtitle { margin: 10px 0 0; color: #c4d1ca; font-size: .98rem; }
+    .navigation {
+      position: sticky;
+      z-index: 5;
+      top: 0;
+      overflow-x: auto;
+      border-bottom: 1px solid var(--line);
+      background: rgba(8, 27, 32, .96);
+      scrollbar-width: thin;
+      scrollbar-color: #42645a transparent;
+    }
+    .skip-link {
+      position: absolute;
+      z-index: 10;
+      top: -48px;
+      left: 16px;
+      padding: 8px 12px;
+      background: var(--green);
+      color: #08231a;
+      font-weight: 700;
+    }
+    .skip-link:focus { top: 12px; }
+    .nav-inner {
+      display: flex;
+      width: max-content;
+      min-width: 100%;
+      padding: 0 clamp(12px, 4vw, 56px);
+      gap: 4px;
+    }
+    .tab {
+      position: relative;
+      flex: 0 0 auto;
+      min-height: 52px;
+      padding: 0 15px;
+      border: 0;
+      border-bottom: 2px solid transparent;
+      background: transparent;
+      color: var(--muted);
+      font: 600 .86rem var(--sans);
+      cursor: pointer;
+      transition: color .18s ease, border-color .18s ease, background .18s ease;
+    }
+    .tab:hover { color: var(--ink); background: rgba(255,255,255,.035); }
+    .tab[aria-current="page"] { border-bottom-color: var(--green); color: var(--green); }
+    .tab:focus-visible { outline: 2px solid var(--green); outline-offset: -4px; }
+    main { padding: 38px clamp(20px, 6vw, 88px) 64px; }
+    .port-heading {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 24px;
+      margin-bottom: 28px;
+      padding-bottom: 22px;
+      border-bottom: 1px solid var(--line);
+    }
+    .port-heading h2 {
+      margin: 0;
+      font: 500 clamp(2rem, 4vw, 3.1rem)/1.1 var(--serif);
+    }
+    .port-heading p { max-width: 540px; margin: 10px 0 0; color: var(--muted); }
+    .port-mark {
+      flex: 0 0 auto;
+      color: var(--gold);
+      font: italic 1rem var(--serif);
+    }
+    .content-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px 36px; }
+    .content-section { min-width: 0; }
+    .content-section h3 {
+      margin: 0 0 13px;
+      color: var(--green);
+      font-size: .76rem;
+      font-weight: 700;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+    .card-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 9px; margin: 0; padding: 0; list-style: none; }
+    .info-card {
+      min-width: 0;
+      padding: 13px 15px;
+      border: 1px solid var(--line);
+      border-radius: 5px;
+      background: var(--navy-raised);
+    }
+    .info-card strong { display: block; margin-bottom: 3px; font-size: .91rem; font-weight: 650; }
+    .info-card span { display: block; color: var(--muted); font-size: .83rem; }
+    .basics-list { grid-template-columns: 1fr; }
+    .essential {
+      margin-top: 36px;
+      padding-top: 23px;
+      border-top: 1px solid var(--line);
+    }
+    .essential h3 { margin: 0 0 13px; color: var(--gold); font: 500 1.35rem var(--serif); }
+    .essential .info-card { background: #112d2a; }
+    .source-section { margin-top: 28px; padding-top: 20px; border-top: 1px solid var(--line); }
+    .source-section h3 { margin: 0 0 10px; color: var(--green); font-size: .76rem; letter-spacing: .12em; text-transform: uppercase; }
+    .source-list { display: flex; flex-wrap: wrap; gap: 8px 18px; margin: 0; padding: 0; list-style: none; }
+    .source-list a { color: var(--green); font-size: .86rem; text-underline-offset: 3px; }
+    .source-note { margin: 12px 0 0; color: var(--muted); font-size: .78rem; }
+    footer { padding: 17px 20px; border-top: 1px solid var(--line); color: #80958d; text-align: center; font-size: .75rem; }
+    @media (max-width: 700px) {
+      .masthead { padding-top: 27px; }
+      main { padding-top: 28px; }
+      .port-heading { align-items: start; }
+      .port-mark { display: none; }
+      .content-grid { grid-template-columns: 1fr; gap: 25px; }
+      .card-list { grid-template-columns: 1fr; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#port-content">Skip to port guide</a>
+  <header class="masthead">
+    <div class="masthead-inner">
+      <p class="eyebrow">Emerald Kaia</p>
+      <h1>Emerald Kaia · Adriatic Discovery</h1>
+      <p class="subtitle">Premium Travel Companion — Your Independent Port-by-Port Guide</p>
+    </div>
+  </header>
+  <nav class="navigation" aria-label="Port destinations">
+    <div class="nav-inner" id="port-nav"></div>
+  </nav>
+  <main id="port-content" tabindex="-1" aria-live="polite"></main>
+  <footer>Emerald Kaia · Adriatic Discovery</footer>
+  <script>
+    'use strict';
+
+    const ports = {
+      venice: {
+        name: 'Venice', region: 'Italy', intro: 'A city of quiet lanes, grand palazzi and everyday life on the water.',
+        basics: [
+          ['Docking', 'Marittima or Tronchetto terminal — direct dock'],
+          ['Currency', 'Euro (€) · English widely spoken'],
+          ['Distance to Center', '~20 min to San Marco via vaporetto'],
+          ['Transport', 'Vaporetto, Water Taxi, Walking']
+        ],
+        activities: [
+          ['Grand Canal Vaporetto Ride on Line 1', '45 min · Free with 24-hr pass'],
+          ['St. Mark’s Basilica', '45–60 min · Entry and Pala d’Oro tickets vary; check official visitor information.'],
+          ['Doge’s Palace', '1.5–2 hrs · Check current ticket price and timed-entry requirements.'],
+          ['Rialto Fish Market', '30–45 min · Free'],
+          ['Day Trip to Murano', '2–3 hrs · Check ACTV for current single-ride or pass options.'],
+          ['Cannaregio Neighborhood', 'Free']
+        ],
+        transport: [
+          ['Line 2 from Tronchetto to San Marco', 'About 20 min · ACTV standard 75-minute ticket €9.50; confirm the return fare and current pass price.'],
+          ['Grand Canal Line 1', 'About 45 min from Piazzale Roma to San Marco · Covered by a valid ACTV pass; check last departure.'],
+          ['Vaporetto from Fondamente Nove to Murano', 'About 10–30 min depending on stop · €9.50 standard 75-minute ticket; check return service.'],
+          ['Vaporetto from Fondamente Nove to Burano', 'About 45 min · €9.50 standard 75-minute ticket; check return service and last sailing.']
+        ],
+        food: [
+          ['Cicchetti', 'Small Venetian bar snacks, best enjoyed with an aperitivo.'],
+          ['Sarde in Saor', 'Sweet-and-sour sardines with onions, raisins and pine nuts.'],
+          ['Baccalà Mantecato', 'Whipped salt cod, traditionally served on toasted bread.'],
+          ['Ombra', 'A small glass of local white wine.']
+        ]
+      },
+      rovinj: {
+        name: 'Rovinj', region: 'Croatia', intro: 'A compact Istrian harbor town of pastel facades, galleries and coastal paths.',
+        basics: [['Arrival', 'Ships generally anchor offshore; tender ashore to the old harbor.'], ['Currency', 'Euro (€) · Croatian and Italian are commonly heard.'], ['Old Town', 'The historic center is a short walk from the harbor.'], ['Getting Around', 'Walking, local taxi and seasonal boat services.']],
+        activities: [['St. Euphemia Church', 'Climb the hill through the old town for harbor views.'], ['Old Town Lanes', 'Explore Grisia Street, studios and the waterfront.'], ['Golden Cape Forest Park', 'Pine-shaded paths, swimming coves and bike routes.'], ['Rovinj Market', 'Seasonal produce, Istrian olive oil and local specialties.']],
+        transport: [['Tender to the old harbor', 'The old town begins at the landing area; walking is free. Follow the ship’s return-tender time.'], ['Golden Cape Forest Park', 'About a 30-minute walk from the old town; free entry. Local taxi fare varies; arrange your return.'], ['Island excursions', 'Departures and prices vary by operator and season; verify the last return boat before boarding.'], ['Local taxi', 'Agree the destination and fare before departure; allow extra time in peak season.']],
+        food: [['Istrian truffles', 'Fresh shaved over pasta when in season.'], ['Fuži', 'Hand-rolled pasta often served with truffle or meat sauce.'], ['Istrian olive oil', 'Look for locally produced extra-virgin oils.'], ['Malvazija', 'A crisp regional white wine.']]
+      },
+      sibenik: {
+        name: 'Šibenik', region: 'Croatia', intro: 'A stone-built Dalmatian city opening onto the Krka estuary and island channels.',
+        basics: [['Arrival', 'The cruise quay is near the historic center; confirm berth on arrival.'], ['Currency', 'Euro (€) · Croatian is the local language.'], ['Old Town', 'The cathedral and central lanes are walkable from the waterfront.'], ['Getting Around', 'Walking, taxi and organized excursions to Krka.']],
+        activities: [['St. James’ Cathedral', 'UNESCO-listed landmark built from interlocking stone slabs.'], ['St. Michael’s Fortress', 'Hilltop fortress with views over the harbor and islands.'], ['Krka National Park', 'Waterfalls and boardwalk scenery; allow time for transport.'], ['St. Nicholas’ Fortress', 'Seaward fortification reached by boat or guided visit.']],
+        transport: [['Line 505 from Šibenik passenger pier', 'Zlarin, Prvić Šepurine and Vodice · About 1 hr 15 min end-to-end. 2026 passenger fare is in the linked price list; check return departures.'], ['Line 532 from Šibenik passenger pier', 'Zlarin, Obonjan, Kaprije and Žirje · Up to about 1 hr 25 min. Check the 2026 fare and same-day return sailing.'], ['Krka National Park', 'Travel by road to a park entrance such as Skradin or Lozovac; transfer and entry costs depend on the option selected.'], ['Local taxi', 'Confirm the fare or meter and pickup time before departure.']],
+        food: [['Soparnik', 'Savory Swiss-chard pie from the Dalmatian hinterland.'], ['Black risotto', 'Rice colored with cuttlefish ink.'], ['Dalmatian prosciutto', 'Air-dried ham, often served with local cheese.'], ['Debit', 'A white wine variety grown in the Šibenik region.']]
+      },
+      trogir: {
+        name: 'Trogir', region: 'Croatia', intro: 'A small island-linked old town where Romanesque stonework meets the Adriatic.',
+        basics: [['Arrival', 'Cruise calls may use a tender or nearby berth; follow ship instructions.'], ['Currency', 'Euro (€) · Croatian is the local language.'], ['Old Town', 'The historic island is compact and best explored on foot.'], ['Getting Around', 'Walking, taxi and boat transfers to nearby beaches.']],
+        activities: [['Cathedral of St. Lawrence', 'See the carved portal and climb the bell tower for a panorama.'], ['Kamerlengo Fortress', 'Harbor-side fortress with open views across the channel.'], ['Riva Promenade', 'Waterfront cafés and views toward Čiovo Island.'], ['Čiovo Island', 'Cross the bridge for beaches and coastal walks.']],
+        transport: [['Line 606 from Trogir (Soline)', 'To Drvenik Mali / Drvenik Veli · About 60 min to the islands. Jadrolinija lists 2026 fares; check the dated timetable and return sailing.'], ['Split Airport', 'On the mainland near Trogir; use a pre-booked transfer or taxi and confirm the fare first.'], ['Čiovo Island', 'Walk across the bridge for free; allow extra time for summer traffic on the return.'], ['Water taxis', 'Agree the destination, total fare and return pickup before boarding.']],
+        food: [['Pašticada', 'Slow-braised Dalmatian beef, commonly served with gnocchi.'], ['Grilled fish', 'Ask what was caught locally that day.'], ['Fritule', 'Small fried dough bites, often flavored with citrus.'], ['Pošip', 'A well-known Dalmatian white wine.']]
+      },
+      vis: {
+        name: 'Vis', region: 'Croatia', intro: 'A laid-back island of clear coves, vineyard slopes and a long maritime history.',
+        basics: [['Arrival', 'Cruise ships typically anchor; tender arrangements depend on conditions.'], ['Currency', 'Euro (€) · Croatian is the local language.'], ['Vis Town', 'Harborfront cafés and the old town are close to the landing area.'], ['Getting Around', 'Walking, local taxi and seasonal boat excursions.']],
+        activities: [['Vis Town Harbor', 'Stroll the waterfront and stone lanes around the harbor.'], ['Komiža', 'Visit the western fishing town by local bus or pre-arranged taxi.'], ['Blue Cave', 'Boat tours depart from the island; sea conditions affect access.'], ['Island vineyards', 'Taste local wines and explore the island’s agricultural landscape.']],
+        transport: [['Jadrolinija line 602 from Split port', 'Split–Vis · About 140 min. Year-round timetable; check the 2026 passenger fare and same-day return options.'], ['Krilo from Split passenger port', 'Via Milna and Hvar · About 1 hr 10–20 min to Vis, fares from €8.50. Seasonal route; confirm the return sailing.'], ['Vis–Komiža bus', 'Limited service; check the day’s timetable before leaving Vis Town and confirm the final return.'], ['Blue Cave boat tours', 'Departures depend on sea conditions; confirm the price, landing point and return time with the operator.']],
+        food: [['Viška pogača', 'Savory island pie traditionally filled with anchovies.'], ['Fresh seafood', 'Look for locally caught fish and grilled squid.'], ['Peka', 'Slow-cooked meat or seafood prepared under a bell-shaped lid.'], ['Vugava', 'Distinctive white wine associated with Vis.']]
+      },
+      hvar: {
+        name: 'Hvar', region: 'Croatia', intro: 'A sunlit island port framed by Venetian stone, lavender hills and sheltered coves.',
+        basics: [['Arrival', 'Ships often anchor offshore and tender into Hvar Town.'], ['Currency', 'Euro (€) · Croatian is the local language.'], ['Town Center', 'The harbor, main square and lanes are walkable from the tender.'], ['Getting Around', 'Walking, taxi, public boat and seasonal water taxi.']],
+        activities: [['St. Stephen’s Square', 'Start at the harbor-facing piazza and its cathedral.'], ['Fortica Fortress', 'Climb above town for a view over the Pakleni Islands.'], ['Franciscan Monastery', 'Harbor-side monastery known for its cloister and art collection.'], ['Pakleni Islands', 'Swim and explore by scheduled boat or locally arranged water taxi.']],
+        transport: [['Split port–Hvar Town', 'Jadrolinija catamaran line 641; check the dated timetable and 2026 fare. Confirm the return sailing before booking.'], ['Krilo Split–Hvar', 'About 50–60 min on listed routes, fares from €8.50. Seasonal options and stops vary; check your exact sailing and return.'], ['Split port–Stari Grad', 'Jadrolinija line 635 · About 120 min. Stari Grad is away from Hvar Town; add a bus or taxi transfer and check its fare.'], ['Hvar Town–Pakleni Islands', 'Local boats leave from the harbor; price and return times vary by operator and season. Agree terms before boarding.']],
+        food: [['Gregada', 'Traditional Hvar fish stew with potatoes and olive oil.'], ['Pašticada', 'Slow-cooked beef, typically accompanied by gnocchi.'], ['Lavender treats', 'Local honey and sweets often feature island lavender.'], ['Bogdanuša', 'A white grape variety native to Hvar.']]
+      },
+      korcula: {
+        name: 'Korčula', region: 'Croatia', intro: 'A walled island town of pale stone, cypress silhouettes and celebrated local wines.',
+        basics: [['Arrival', 'Ships may anchor and tender to the old town waterfront.'], ['Currency', 'Euro (€) · Croatian is the local language.'], ['Old Town', 'The compact walled center is directly beside the landing area.'], ['Getting Around', 'Walking in town; taxi and boat services beyond the center.']],
+        activities: [['Old Town Walls', 'Walk the narrow streets laid out around the central spine.'], ['St. Mark’s Cathedral', 'Visit the cathedral and its finely worked stone details.'], ['Marco Polo House', 'A local museum explores the island’s association with Marco Polo.'], ['Lumbarda', 'Nearby village known for sandy beaches and Grk vineyards.']],
+        transport: [['Split–Hvar–Korčula Town', 'Krilo lists about 2 hr 30 min from Split and fares from €25. Some sailings use longer island-hopping routes; check date and return service.'], ['Split port–Vela Luka', 'Jadrolinija line 604 · About 3 hr. Vela Luka is on the island’s west end; arrange onward travel to Korčula Town. 2026 fare is linked.'], ['Orebić–Dominče', 'Jadrolinija line 634 reaches the town-side ferry terminal; see the operator’s dated timetable and 2026 fare, and check the last return.'], ['Water taxis', 'Agree the fare, destination and pickup time before leaving the dock.']],
+        food: [['Žrnovski makaruni', 'Hand-rolled pasta traditionally served with rich meat sauce.'], ['Grk wine', 'Dry white wine grown around Lumbarda.'], ['Pošip', 'A fragrant white wine from the island and nearby Korčula region.'], ['Rožata', 'Dalmatian custard dessert scented with rose liqueur.']]
+      },
+      dubrovnik: {
+        name: 'Dubrovnik', region: 'Croatia', intro: 'A celebrated walled city of limestone streets, terracotta roofs and Adriatic views.',
+        basics: [['Arrival', 'Cruise ships use Gruž harbor; the Old Town is several kilometers away.'], ['Currency', 'Euro (€) · Croatian is the local language.'], ['Old Town', 'Reach Pile Gate by local bus or taxi from Gruž.'], ['Getting Around', 'Walking, city bus, taxi and cable car.']],
+        activities: [['City Walls', 'Allow around 1.5–2 hours; exposed sections have little shade.'], ['Stradun', 'Walk the limestone main street and explore side lanes.'], ['Lokrum Island', 'Short boat ride from the Old Port; check final return sailing.'], ['Mount Srđ', 'Cable car or road transfer for a wide view of the city.']],
+          transport: [['Split–Gruž by Krilo', 'About 4 hr 30–40 min via island stops · fares from €20. Seasonal route; verify the chosen sailing and return connection.'], ['Gruž to Pile Gate', 'Libertas city buses 1A/1B run from the harbor area; €2.50 onboard single ticket or €1.73 one-hour ticket. Check the live timetable and return traffic.'], ['Gruž–Elaphiti Islands', 'Jadrolinija line 831 takes about 1 hr to Lopud and 1 hr 20 min to Suđurađ; year-round service, with 2026 fares linked. Check the last return.'], ['Old Port–Lokrum', 'Short boat crossing; fare and departures vary by season. Confirm the last return before visiting.']],
+        food: [['Black risotto', 'Cuttlefish-ink rice, common along the Dalmatian coast.'], ['Oysters', 'Try oysters from the nearby Bay of Mali Ston.'], ['Rozata', 'A chilled caramel custard dessert.'], ['Plavac Mali', 'A robust red wine from southern Dalmatia.']]
+      },
+      split: {
+        name: 'Split', region: 'Croatia', intro: 'A lively waterfront city whose Roman palace is woven into everyday life.',
+        basics: [['Arrival', 'The cruise terminal is beside the city center and ferry port.'], ['Currency', 'Euro (€) · Croatian is the local language.'], ['Diocletian’s Palace', 'The historic core is a short walk from the waterfront.'], ['Getting Around', 'Walking, local bus, taxi and ferry.']],
+        activities: [['Diocletian’s Palace', 'Explore the cellars, Peristyle and lanes of the living palace.'], ['Cathedral of St. Domnius', 'Visit the former mausoleum and climb the bell tower.'], ['Riva Promenade', 'Harborfront cafés beneath the palace walls.'], ['Marjan Hill', 'Pine-shaded paths and viewpoints above the city.']],
+        transport: [['Split port–Supetar', 'Jadrolinija line 631 to Brač · About 50 min. Check the 2026 passenger fare and date-specific return departures.'], ['Split port–Vis / Hvar / Korčula', 'Jadrolinija and Krilo serve selected islands; journey times, prices and seasonal availability depend on route. Compare operator schedules before booking.'], ['Cruise terminal–Old Town', 'The Riva and Diocletian’s Palace are about a 5–10-minute walk; no ticket required.'], ['Local buses and taxis', 'Use city services for outlying neighborhoods; check current fare and return options before travel.']],
+        food: [['Pašticada', 'Dalmatian braised beef served with gnocchi.'], ['Soparnik', 'Savory chard pie from the nearby Poljica region.'], ['Grilled sardines', 'A simple local favorite when in season.'], ['Maraschino', 'A cherry liqueur with roots in the Dalmatian coast.']]
+      },
+      zadar: {
+        name: 'Zadar', region: 'Croatia', intro: 'A relaxed coastal city where Roman ruins, island ferries and modern seafront art meet.',
+        basics: [['Arrival', 'Cruise berths vary; the old town lies across the harbor from some docks.'], ['Currency', 'Euro (€) · Croatian is the local language.'], ['Old Town', 'A peninsula of historic sights, reached on foot or by local transport.'], ['Getting Around', 'Walking, local bus, taxi and ferry.']],
+        activities: [['Sea Organ', 'Listen to wave-powered tones along the western waterfront.'], ['Greeting to the Sun', 'Light installation beside the Sea Organ.'], ['Roman Forum', 'Open-air remains beside St. Donatus Church.'], ['St. Anastasia Cathedral', 'Climb the bell tower for views over the peninsula.']],
+        transport: [['Central Zadar port–Preko', 'Jadrolinija passenger line 409 · About 25 min, with numerous daily sailings. Check the 2026 fare and same-day return.'], ['Gaženica–Ošljak–Preko', 'Jadrolinija ferry line 431 · About 25 min from Gaženica; multiple daily sailings year-round. Check fare and terminal transfer.'], ['Cruise berth–Old Town', 'Berths differ: confirm whether you arrive at the central port or Gaženica and check shuttle/bus costs.'], ['National parks', 'Pre-book a road transfer or excursion; return transport is not implied by park admission.']],
+        food: [['Pašticada', 'Slow-braised beef with a sweet-savory sauce.'], ['Pag cheese', 'Sheep’s milk cheese from the island of Pag.'], ['Maraschino', 'Traditional cherry liqueur associated with Zadar.'], ['Fresh Adriatic fish', 'Ask for the catch of the day.']]
+      },
+      'national-parks': {
+        name: 'National Parks', region: 'Croatia & Italy', intro: 'Nature-led excursions across the coast and islands, from waterfalls to rugged limestone landscapes.',
+        basics: [['Planning', 'Park access, boat transfers and opening times vary by season.'], ['Tickets', 'Buy through official park channels where advance reservations are offered.'], ['What to Bring', 'Water, sun protection, sturdy footwear and a charged phone.'], ['Access', 'Confirm mobility needs, transfer time and return-to-ship buffer.']],
+        activities: [['Krka National Park', 'Waterfalls, river scenery and boardwalk routes near Šibenik.'], ['Plitvice Lakes', 'UNESCO-listed lakes and waterfalls; allow a full day from the coast.'], ['Mljet National Park', 'Island lakes, forest paths and boat access to St. Mary’s islet.'], ['Brijuni National Park', 'Island landscapes and archaeological sites reached from Istria.']],
+        transport: [['Krka from Šibenik', 'Road transfer to Skradin or Lozovac; transport and park-entry costs depend on the entrance and ticket selected. Verify your return transfer.'], ['Plitvice Lakes', 'Long road journey from the coast; allow a full day, reserve timed park entry and book return transport separately.'], ['Mljet via Sobra', 'Jadrolinija line 832 from Prapratno takes about 45 min. Check the 2026 fare, onward island transport and final return sailing.'], ['Brijuni from Fažana', 'Board at the town jetty · About 15 min by boat. Park ticket/visit booking required; departures vary by month, so reserve and confirm your return boat.']],
+        food: [['Peka', 'Slow-cooked meat or seafood, best ordered ahead where available.'], ['Local olive oil', 'Istrian and Dalmatian oils make a regional tasting.'], ['Island cheese', 'Pag cheese is a distinctive sheep’s milk specialty.'], ['Regional wine', 'Try Istrian Malvazija or Dalmatian Pošip.']]
+      }
+    };
+
+    const essentials = [
+      ['Currency in Croatia', 'Croatia uses the Euro (since Jan 2023).'],
+      ['Dubrovnik planning', 'Book Dubrovnik City Walls and Lokrum early.'],
+      ['Island water taxis', 'Water taxis on Croatian islands are informal — negotiate price at the dock.'],
+      ['The ship', 'Emerald Kaia is a small ship (128 guests).'],
+      ['Peak season', 'Peak season (Jul–Aug): arrive early.'],
+      ['Independent tours', 'Use Viator and GetYourGuide for independent tours.']
+    ];
+
+    const officialSources = {
+      venice: [
+        ['ACTV fares', 'https://actv.avmspa.it/en/content/prices'],
+        ['ACTV waterbus timetables', 'https://avm.avmspa.it/en/content/water-bus-service-timetable-0'],
+        ['St. Mark’s Basilica tickets', 'https://tickets.basilicasanmarco.it/it/negozio#/it/acquista?skugroup_id=5937'],
+        ['Doge’s Palace tickets', 'https://muve.vivaticket.it/en/tour/palazzo-ducale/2478']
+      ],
+      rovinj: [
+        ['Rovinj Tourist Board', 'https://www.rovinj-tourism.com/en'],
+        ['Rovinj excursions', 'https://www.rovinj-tourism.com/en/discover/excursions']
+      ],
+      sibenik: [
+        ['Jadrolinija line 505: schedule and 2026 fares', 'https://www.jadrolinija.hr/en/travel/sibenik_-_zlarin_-_prvic_luka_-_sepurine_-_vodice'],
+        ['Jadrolinija line 532: schedule and 2026 fares', 'https://www.jadrolinija.hr/en/travel/sibenik_-_zlarin_-_obonjan_-_kaprije_-_zirje'],
+        ['Krka National Park: current ticket prices', 'https://npkrka.hr/hr/posjeti/cjenik/']
+      ],
+      trogir: [
+        ['Jadrolinija route 606', 'https://www.jadrolinija.hr/en/travel/trogir_soline_-_drvenik_mali_-_drvenik_veli']
+      ],
+      vis: [
+        ['Jadrolinija line 602: timetable and 2026 fares', 'https://www.jadrolinija.hr/en/travel/split_%E2%80%93_vis'],
+        ['Jadrolinija line 659: seasonal timetable and fares', 'https://www.jadrolinija.hr/en/travel/split_-_bol_-_hvar_-_vis_2'],
+        ['Krilo live schedules and fares', 'https://krilo.hr/en/schedule']
+      ],
+      hvar: [
+        ['Jadrolinija line 641: Split–Hvar Town schedule and fares', 'https://www.jadrolinija.hr/en/travel/split-hvar'],
+        ['Jadrolinija line 635: Split–Stari Grad schedule and 2026 fares', 'https://www.jadrolinija.hr/en/travel/split_-_stari_grad_hvar'],
+        ['Krilo live schedules and fares', 'https://krilo.hr/en/schedule']
+      ],
+      korcula: [
+        ['Jadrolinija line 604: Split–Vela Luka timetable and fares', 'https://www.jadrolinija.hr/en/travel/split_-vela_luka_korcula_-_ubli_lastovo'],
+        ['Jadrolinija line 634: Orebić–Dominče timetable and 2026 fares', 'https://www.jadrolinija.hr/en/travel/orebic_-_domince_korcula'],
+        ['Krilo Split–Korčula: live schedules and fares', 'https://krilo.hr/en/destinations/korcula']
+      ],
+      dubrovnik: [
+        ['Jadrolinija line 831: Dubrovnik–Lopud–Šipan schedule and fares', 'https://www.jadrolinija.hr/en/travel/dubrovnik_-_lopud_-sudjuradj_sipan'],
+        ['Jadrolinija line 807: Elaphiti Islands schedule and fares', 'https://www.jadrolinija.hr/en/travel/dubrovnik_-_kolocep_-_lopud_-_sudjuradj_sipan'],
+        ['Krilo Split–Dubrovnik: live schedules and fares', 'https://krilo.hr/en/destinations/dubrovnik'],
+        ['Libertas current bus prices', 'https://www.libertasdubrovnik.hr/en/price-list'],
+        ['Libertas city-bus timetable', 'https://www.libertasdubrovnik.hr/en/timetable/1/city-timetable']
+      ],
+      split: [
+        ['Jadrolinija line 631: Split–Supetar timetable and 2026 fares', 'https://www.jadrolinija.hr/en/travel/split_-_supetar_brac'],
+        ['Jadrolinija island sailing schedules', 'https://www.jadrolinija.hr/en/travels'],
+        ['Krilo live schedules and fares', 'https://krilo.hr/en/schedule']
+      ],
+      zadar: [
+        ['Jadrolinija line 409: central Zadar–Preko schedule and fares', 'https://www.jadrolinija.hr/en/travel/zadar_-_preko'],
+        ['Jadrolinija line 431: Gaženica–Preko schedule and 2026 fares', 'https://www.jadrolinija.hr/en/travel/zadar_gazenica_-_osljak_-_preko_ugljan']
+      ],
+      'national-parks': [
+        ['Krka National Park: current ticket prices', 'https://npkrka.hr/hr/posjeti/cjenik/'],
+        ['Plitvice Lakes tickets and current alerts', 'https://ticketing.np-plitvicka-jezera.hr/'],
+        ['Jadrolinija line 832: Prapratno–Sobra timetable and fares', 'https://www.jadrolinija.hr/en/travel/prapratno_peljesac_-_sobra_mljet'],
+        ['Brijuni boat schedule from Fažana', 'https://np-brijuni.hr/en/boat-schedule-for-veliki-brijun']
+      ]
+    };
+
+    const nav = document.getElementById('port-nav');
+    const content = document.getElementById('port-content');
+    const escapeHtml = value => String(value).replace(/[&<>"']/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char]);
+    const cardMarkup = ([title, detail]) => `<li class="info-card"><strong>${escapeHtml(title)}</strong><span>${escapeHtml(detail)}</span></li>`;
+    const sectionMarkup = (title, entries, className = '') => `<section class="content-section ${className}"><h3>${escapeHtml(title)}</h3><ul class="card-list ${className === 'basics' ? 'basics-list' : ''}">${entries.map(cardMarkup).join('')}</ul></section>`;
+    const sourceMarkup = portId => `<section class="source-section" aria-labelledby="source-title"><h3 id="source-title">Official schedules, tickets & visitor information</h3><ul class="source-list">${officialSources[portId].map(([label, url]) => `<li><a href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(label)}</a></li>`).join('')}</ul><p class="source-note">Official links reviewed 27 September 2026. Timetables, fares and admission details change; confirm with the operator or venue for your travel date.</p></section>`;
+
+    function renderPort(portId, updateUrl = true) {
+      const port = ports[portId];
+      if (!port) return;
+      if (updateUrl && new URLSearchParams(window.location.search).get('port') !== portId) {
+        const url = new URL(window.location.href);
+        url.searchParams.set('port', portId);
+        window.history.pushState({ portId }, '', url);
+      }
+      document.querySelectorAll('.tab').forEach(tab => {
+        const active = tab.dataset.port === portId;
+        tab.setAttribute('aria-current', active ? 'page' : 'false');
+      });
+      const activeTab = nav.querySelector(`[data-port="${portId}"]`);
+      if (activeTab) {
+        const navigation = nav.closest('.navigation');
+        const tabBounds = activeTab.getBoundingClientRect();
+        const navigationBounds = navigation.getBoundingClientRect();
+        if (tabBounds.left < navigationBounds.left || tabBounds.right > navigationBounds.right) {
+          const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+          activeTab.scrollIntoView({ block: 'nearest', inline: 'nearest', behavior: reduceMotion ? 'auto' : 'smooth' });
+        }
+      }
+      content.innerHTML = `
+        <header class="port-heading">
+          <div><p class="eyebrow">${escapeHtml(port.region)} · Port Guide</p><h2>${escapeHtml(port.name)}</h2><p>${escapeHtml(port.intro)}</p></div>
+          <span class="port-mark">Adriatic Discovery</span>
+        </header>
+        <div class="content-grid">
+          ${sectionMarkup('Port Basics', port.basics, 'basics')}
+          ${sectionMarkup('Top Things To Do', port.activities)}
+          ${sectionMarkup('Ferries & Water Transport', port.transport)}
+          ${sectionMarkup('Local Food & Drink', port.food)}
+        </div>
+        <section class="essential" aria-labelledby="essential-title">
+          <h3 id="essential-title">Essential Knowledge</h3>
+          <ul class="card-list">${essentials.map(cardMarkup).join('')}</ul>
+        </section>`;
+      content.insertAdjacentHTML('beforeend', sourceMarkup(portId));
+    }
+
+    Object.entries(ports).forEach(([portId, port]) => {
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.className = 'tab';
+      button.dataset.port = portId;
+      button.textContent = port.name;
+      button.setAttribute('aria-current', 'false');
+      button.addEventListener('click', () => renderPort(portId));
+      nav.append(button);
+    });
+
+    function renderPortFromUrl() {
+      const requestedPort = new URLSearchParams(window.location.search).get('port');
+      renderPort(ports[requestedPort] ? requestedPort : 'venice', false);
+    }
+
+    window.addEventListener('popstate', renderPortFromUrl);
+    const initialPort = new URLSearchParams(window.location.search).get('port');
+    if (initialPort && ports[initialPort]) {
+      renderPort(initialPort, false);
+    } else {
+      renderPort('venice', false);
+      const url = new URL(window.location.href);
+      url.searchParams.set('port', 'venice');
+      window.history.replaceState({ portId: 'venice' }, '', url);
+    }
+  </script>
+</body>
+</html>
