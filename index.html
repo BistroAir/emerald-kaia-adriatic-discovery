@@ -135,6 +135,16 @@
     .info-card strong { display: block; margin-bottom: 3px; font-size: .91rem; font-weight: 650; }
     .info-card span { display: block; color: var(--muted); font-size: .83rem; }
     .basics-list { grid-template-columns: 1fr; }
+    .bus-intro { max-width: 760px; margin: -12px 0 24px; color: var(--muted); }
+    .bus-destination-list { display: grid; gap: 12px; margin: 0; padding: 0; list-style: none; }
+    .bus-destination { padding: 17px 18px; border: 1px solid var(--line); border-radius: 5px; background: var(--navy-raised); }
+    .bus-destination h3 { margin: 0 0 8px; color: var(--green); font: 500 1.3rem var(--serif); }
+    .bus-facts { display: flex; flex-wrap: wrap; gap: 6px 20px; margin: 0 0 10px; color: var(--muted); font-size: .84rem; }
+    .bus-facts strong { color: var(--ink); }
+    .bus-destination p { margin: 8px 0 0; color: var(--muted); font-size: .87rem; }
+    .bus-destination a { color: var(--green); text-underline-offset: 3px; }
+    .bus-destination ul { margin: 7px 0 0; padding-left: 20px; color: var(--muted); font-size: .87rem; }
+    .bus-footer-note { margin: 20px 0 0; color: var(--muted); font-size: .78rem; }
     .essential {
       margin-top: 36px;
       padding-top: 23px;
@@ -284,6 +294,23 @@
         activities: [['Krka National Park', 'Waterfalls, river scenery and boardwalk routes near Šibenik.'], ['Plitvice Lakes', 'UNESCO-listed lakes and waterfalls; allow a full day from the coast.'], ['Mljet National Park', 'Island lakes, forest paths and boat access to St. Mary’s islet.'], ['Brijuni National Park', 'Island landscapes and archaeological sites reached from Istria.']],
         transport: [['Krka from Šibenik', 'Road transfer to Skradin or Lozovac; transport and park-entry costs depend on the entrance and ticket selected. Verify your return transfer.'], ['Plitvice Lakes', 'Long road journey from the coast; allow a full day, reserve timed park entry and book return transport separately.'], ['Mljet via Sobra', 'Jadrolinija line 832 from Prapratno takes about 45 min. Check the 2026 fare, onward island transport and final return sailing.'], ['Brijuni from Fažana', 'Board at the town jetty · About 15 min by boat. Park ticket/visit booking required; departures vary by month, so reserve and confirm your return boat.']],
         food: [['Peka', 'Slow-cooked meat or seafood, best ordered ahead where available.'], ['Local olive oil', 'Istrian and Dalmatian oils make a regional tasting.'], ['Island cheese', 'Pag cheese is a distinctive sheep’s milk specialty.'], ['Regional wine', 'Try Istrian Malvazija or Dalmatian Pošip.']]
+      },
+      'bus-travel-dubrovnik': {
+        name: 'Bus Travel from Dubrovnik', region: 'June Day Trips',
+        title: '🏆 Best Cities & Towns Within 60–90 Minutes by Bus from Dubrovnik',
+        intro: 'These towns make easy, scenic, low-stress bus day trips from Dubrovnik and are especially appealing in June. All listed buses depart from Dubrovnik’s main bus station at Port Gruž. Check the date-specific Libertas timetable before setting out.',
+        busDestinations: [
+          { name: 'Cavtat', minutes: '25–35', distance: '20 km south', lines: '10', fare: 'About €3.00 one way', why: ['Waterfront promenades, pine forests and calm bays', 'Easy bus frequency (about every 30 minutes)', 'Great for a relaxed scenic day'], vibe: 'Elegant, quiet, photogenic.' },
+          { name: 'Kupari', minutes: '15–20', distance: '10 km south', lines: '10 (same line as Cavtat)', fare: 'About €2.50 one way', why: ['Abandoned Yugoslav-era resort ruins', 'Dramatic photography opportunities', 'Beautiful beach next to the ruins'], vibe: 'Atmospheric, unique, surreal.' },
+          { name: 'Mlini', minutes: '20–25', distance: '12 km south', lines: '10', fare: 'About €2.50 one way', why: ['Small seaside village with gardens, streams and coves', 'Easy walking paths', 'Great lunch spots'], vibe: 'Peaceful, green, gentle.' },
+          { name: 'Plat', minutes: '30–35', distance: '15 km south', lines: '10', fare: 'About €3.00 one way', why: ['Quiet beaches', 'Good for a simple, low-crowd afternoon'], vibe: 'Minimalist, quiet coastline.' },
+          { name: 'Slano', minutes: '45–55', distance: '37 km northwest', lines: '12', fare: 'About €4.00 one way', why: ['Beautiful long bay', 'Easy walking and calm water', 'Great for a half-day scenic escape'], vibe: 'Wide bay, slow pace.' },
+          { name: 'Ston', minutes: '55–65', distance: '54 km northwest', lines: '15', fare: 'About €5.00 one way', why: ['The Great Wall of Ston, a 5 km fortification', 'Famous oyster farms', 'Excellent food'], vibe: 'Historic, culinary, scenic.' },
+          { name: 'Orašac', minutes: '20–25', distance: '14 km northwest', lines: '12', fare: 'About €2.50 one way', why: ['Quiet village with great Adriatic views', 'Near the Sun Gardens resort area'], vibe: 'Elevated views, peaceful.' },
+          { name: 'Trsteno', minutes: '25–30', distance: '19 km northwest', lines: '12', fare: 'About €3.00 one way', why: ['Trsteno Arboretum, a Game of Thrones filming site', 'Ancient gardens and sea views'], vibe: 'Botanical, historic, cinematic.' }
+        ],
+        busSchedule: 'https://libertasdubrovnik.hr/vozni-red/',
+        footerNote: 'All travel times and fares based on typical June schedules from Libertas Dubrovnik.'
       }
     };
 
@@ -337,6 +364,10 @@
         ['Libertas current bus prices', 'https://www.libertasdubrovnik.hr/en/price-list'],
         ['Libertas city-bus timetable', 'https://www.libertasdubrovnik.hr/en/timetable/1/city-timetable']
       ],
+      'bus-travel-dubrovnik': [
+        ['Libertas Dubrovnik city-bus schedule', 'https://libertasdubrovnik.hr/vozni-red/'],
+        ['Libertas Dubrovnik bus fares', 'https://www.libertasdubrovnik.hr/en/price-list']
+      ],
       split: [
         ['Jadrolinija line 631: Split–Supetar timetable and 2026 fares', 'https://www.jadrolinija.hr/en/travel/split_-_supetar_brac'],
         ['Jadrolinija island sailing schedules', 'https://www.jadrolinija.hr/en/travels'],
@@ -388,6 +419,30 @@
           activeTab.scrollIntoView({ block: 'nearest', inline: 'nearest', behavior: reduceMotion ? 'auto' : 'smooth' });
         }
       }
+      if (port.busDestinations) {
+        content.innerHTML = `
+          <header class="port-heading">
+            <div><p class="eyebrow">${escapeHtml(port.region)} · ${escapeHtml(port.name)}</p><h2>${escapeHtml(port.title)}</h2></div>
+            <span class="port-mark">Adriatic Discovery</span>
+          </header>
+          <p class="bus-intro">${escapeHtml(port.intro)}</p>
+          <section aria-label="Bus day-trip destinations">
+            <ul class="bus-destination-list">${port.busDestinations.map(destination => `
+              <li class="bus-destination">
+                <h3>${escapeHtml(destination.name)}</h3>
+                <p class="bus-facts"><span><strong>Travel time:</strong> ${escapeHtml(destination.minutes)} min</span><span><strong>Distance:</strong> ${escapeHtml(destination.distance)}</span><span><strong>Bus line:</strong> ${escapeHtml(destination.lines)}</span><span><strong>Typical fare:</strong> ${escapeHtml(destination.fare)}</span></p>
+                <p><strong>Official schedule:</strong> <a href="${escapeHtml(port.busSchedule)}" target="_blank" rel="noopener noreferrer">Libertas Dubrovnik</a></p>
+                <p><strong>Why it’s great</strong></p>
+                <ul>${destination.why.map(reason => `<li>${escapeHtml(reason)}</li>`).join('')}</ul>
+                <p><strong>Vibe:</strong> ${escapeHtml(destination.vibe)}</p>
+              </li>`).join('')}</ul>
+            <p class="bus-footer-note">${escapeHtml(port.footerNote)}</p>
+          </section>`;
+        content.insertAdjacentHTML('beforeend', `<section class="essential" aria-labelledby="essential-title"><h3 id="essential-title">Essential Knowledge</h3><ul class="card-list">${essentials.map(cardMarkup).join('')}</ul></section>`);
+        content.insertAdjacentHTML('beforeend', sourceMarkup(portId));
+        return;
+      }
+
       content.innerHTML = `
         <header class="port-heading">
           <div><p class="eyebrow">${escapeHtml(port.region)} · Port Guide</p><h2>${escapeHtml(port.name)}</h2><p>${escapeHtml(port.intro)}</p></div>
