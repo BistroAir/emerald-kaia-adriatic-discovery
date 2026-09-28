@@ -148,6 +148,26 @@
     .place-info-link:focus-visible { outline: 2px solid var(--green); outline-offset: 3px; }
     .port-map-link { white-space: nowrap; }
     .port-actions { display: flex; flex-direction: column; align-items: flex-end; gap: 8px; }
+    .history-companion-btn {
+      display: inline-flex;
+      align-items: center;
+      margin-top: 8px;
+      padding: 7px 10px;
+      border: 1px solid rgba(231, 200, 138, .55);
+      border-radius: 5px;
+      background: rgba(231, 200, 138, .08);
+      color: var(--gold);
+      font: 700 .78rem var(--sans);
+      line-height: 1.2;
+      cursor: pointer;
+      transition: background .18s ease, border-color .18s ease, color .18s ease;
+    }
+    .history-companion-btn:hover {
+      border-color: var(--gold);
+      background: rgba(231, 200, 138, .15);
+      color: #f7dfad;
+    }
+    .history-companion-btn:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
     .basics-list { grid-template-columns: 1fr; }
     .bus-intro { max-width: 760px; margin: -12px 0 24px; color: var(--muted); }
     .bus-destination-list { display: grid; gap: 12px; margin: 0; padding: 0; list-style: none; }
@@ -407,34 +427,82 @@
 
     const nav = document.getElementById('port-nav');
     const content = document.getElementById('port-content');
+    content.addEventListener('click', event => {
+      const button = event.target.closest('[data-history-place]');
+      if (!button) return;
+      launchHistoryCompanion(button.dataset.historyPlace, button.dataset.historyLocation);
+    });
     const escapeHtml = value => String(value).replace(/[&<>"']/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char]);
     const mapsSearchUrl = query => `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`;
     const placeInfoLink = (query, label = 'Place information') => `<a class="place-info-link" href="${escapeHtml(mapsSearchUrl(query))}" target="_blank" rel="noopener noreferrer" aria-label="${escapeHtml(label)}: ${escapeHtml(query)}">ⓘ ${escapeHtml(label)}</a>`;
+    const historyPrompt = (place, location) => `I am visiting ${place} in ${location}.
+
+Act as my personal historian and an engaging, careful storyteller. Help me understand what I am seeing while I am standing here.
+
+Please explain:
+1. What this place or feature is and why it was created
+2. Who built, funded, used or controlled it
+3. What was happening locally and in the wider world at the time
+4. What daily life here may have been like, clearly separating documented facts from informed reconstruction
+5. The most important events or changes connected with it
+6. Architectural, artistic or archaeological details I should look for
+7. What has changed, survived, been rebuilt or restored
+8. What most visitors overlook
+9. How a person standing here in its most important historical period might have understood what they saw
+
+Use current, reliable sources and cite them. Do not guess. If evidence is disputed or uncertain, identify that clearly. End with five things I should look at right now.`;
+
+    async function copyTextWithFallback(text) {
+      if (navigator.clipboard && window.isSecureContext) {
+        await navigator.clipboard.writeText(text);
+        return true;
+      }
+      const textArea = document.createElement('textarea');
+      textArea.value = text;
+      textArea.setAttribute('readonly', '');
+      textArea.style.position = 'fixed';
+      textArea.style.opacity = '0';
+      document.body.appendChild(textArea);
+      textArea.select();
+      const copied = document.execCommand('copy');
+      textArea.remove();
+      return copied;
+    }
+
+    async function launchHistoryCompanion(place, location) {
+      const prompt = historyPrompt(place, location);
+      let copied = false;
+      try {
+        copied = await copyTextWithFallback(prompt);
+      } catch (error) {
+        console.warn('History Companion clipboard copy failed.', error);
+      }
+
+      const copilotUrl = `https://copilot.microsoft.com/?q=${encodeURIComponent(prompt)}`;
+      const copilotWindow = window.open(copilotUrl, '_blank', 'noopener,noreferrer');
+
+      if (!copilotWindow) {
+        if (copied) {
+          alert('Your History Companion prompt was copied. Your browser blocked the new tab, so open Microsoft Copilot and paste the prompt.');
+        } else {
+          window.location.href = copilotUrl;
+        }
+        return;
+      }
+
+      if (copied) {
+        window.setTimeout(() => {
+          alert('Copilot opened in a new tab. If the prompt does not appear automatically, paste the copied History Companion prompt into Copilot.');
+        }, 350);
+      }
+    }
+
+    const historyCompanionButton = (place, location) => `<button type="button" class="history-companion-btn" data-history-place="${escapeHtml(place)}" data-history-location="${escapeHtml(location)}">🏛️ Ask the Historian</button>`;
     const cardMarkup = ([title, detail], options = {}) => {
-
-  let infoLink = '';
-
-  if (options.linkPlaces) {
-
-    const label =
-      options.category === 'food'
-        ? '🍽 Learn More'
-        : 'ⓘ Place Information';
-
-    infoLink = placeInfoLink(
-      `${title}, ${options.location}`,
-      label
-    );
-  }
-
-  return `
-    <li class="info-card">
-      <strong>${escapeHtml(title)}</strong>
-      <span>${escapeHtml(detail)}</span>
-      ${infoLink}
-    </li>
-  `;
-};
+      const infoLink = options.linkPlaces ? placeInfoLink(`${title}, ${options.location}`) : '';
+      const historyButton = options.historyCompanion ? historyCompanionButton(title, options.location) : '';
+      return `<li class="info-card"><strong>${escapeHtml(title)}</strong><span>${escapeHtml(detail)}</span>${infoLink}${historyButton}</li>`;
+    };
     const sectionMarkup = (title, entries, className = '', options = {}) => `<section class="content-section ${className}"><h3>${escapeHtml(title)}</h3><ul class="card-list ${className === 'basics' ? 'basics-list' : ''}">${entries.map(entry => cardMarkup(entry, options)).join('')}</ul></section>`;
     const sourceMarkup = portId => `<section class="source-section" aria-labelledby="source-title"><h3 id="source-title">Official schedules, tickets & visitor information</h3><ul class="source-list">${officialSources[portId].map(([label, url]) => `<li><a href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(label)}</a></li>`).join('')}</ul><p class="source-note">Official links reviewed 27 September 2026. Timetables, fares and admission details change; confirm with the operator or venue for your travel date.</p></section>`;
 
@@ -472,6 +540,7 @@
               <li class="bus-destination">
                 <h3>${escapeHtml(destination.name)}</h3>
                 ${placeInfoLink(`${destination.name}, near Dubrovnik, Croatia`, 'Place information')}
+                ${historyCompanionButton(destination.name, 'Dubrovnik-Neretva County, Croatia')}
                 <p class="bus-facts"><span><strong>Travel time:</strong> ${escapeHtml(destination.minutes)} min</span><span><strong>Distance:</strong> ${escapeHtml(destination.distance)}</span><span><strong>Bus line:</strong> ${escapeHtml(destination.lines)}</span><span><strong>Typical fare:</strong> ${escapeHtml(destination.fare)}</span></p>
                 <p><strong>Official schedule:</strong> <a href="${escapeHtml(port.busSchedule)}" target="_blank" rel="noopener noreferrer">Libertas Dubrovnik</a></p>
                 <p><strong>Why it’s great</strong></p>
@@ -492,18 +561,9 @@
         </header>
         <div class="content-grid">
           ${sectionMarkup('Port Basics', port.basics, 'basics')}
-          ${sectionMarkup('Top Things To Do', port.activities, '', { linkPlaces: true, location: `${port.name}, ${port.region}` })}
+          ${sectionMarkup('Top Things To Do', port.activities, '', { linkPlaces: true, historyCompanion: true, location: `${port.name}, ${port.region}` })}
           ${sectionMarkup('Ferries & Water Transport', port.transport)}
-          ${sectionMarkup(
-'Local Food & Drink',
-port.food,
-'',
-{
-linkPlaces: true,
-location: `${port.name}, ${port.region}`,
-category: 'food'
-}
-)}
+          ${sectionMarkup('Local Food & Drink', port.food)}
         </div>
         ${port.islandFerries ? sectionMarkup('Island Ferries from Dubrovnik', port.islandFerries, 'island-ferries', { linkPlaces: true, location: 'Dubrovnik, Croatia' }) : ''}
         <section class="essential" aria-labelledby="essential-title">
