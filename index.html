@@ -334,7 +334,7 @@
           { name: 'Orašac', minutes: '20–25', distance: '14 km northwest', lines: '12', fare: 'About €2.50 one way', why: ['Quiet village with great Adriatic views', 'Near the Sun Gardens resort area'], vibe: 'Elevated views, peaceful.' },
           { name: 'Trsteno', minutes: '25–30', distance: '19 km northwest', lines: '12', fare: 'About €3.00 one way', why: ['Trsteno Arboretum, a Game of Thrones filming site', 'Ancient gardens and sea views'], vibe: 'Botanical, historic, cinematic.' }
         ],
-        busSchedule: 'https://libertasdubrovnik.hr/vozni-red/',
+        busSchedule: 'https://libertasdubrovnik.hr/',
         footerNote: 'All travel times and fares based on typical June schedules from Libertas Dubrovnik.'
       }
     };
@@ -390,7 +390,7 @@
         ['Libertas city-bus timetable', 'https://www.libertasdubrovnik.hr/en/timetable/1/city-timetable']
       ],
       'bus-travel-dubrovnik': [
-        ['Libertas Dubrovnik city-bus schedule', 'https://libertasdubrovnik.hr/vozni-red/'],
+        ['Libertas Dubrovnik city-bus schedule', 'https://libertasdubrovnik.hr/'],
         ['Libertas Dubrovnik bus fares', 'https://www.libertasdubrovnik.hr/en/price-list']
       ],
       split: [
@@ -424,7 +424,7 @@
     });
     const escapeHtml = value => String(value).replace(/[&<>"']/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char]);
     const mapsSearchUrl = query => `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`;
-    const placeInfoLink = (query, label = 'Place information') => `<a class="place-info-link" href="${escapeHtml(mapsSearchUrl(query))}" target="_blank" rel="noopener noreferrer" aria-label="${escapeHtml(label)}: ${escapeHtml(query)}">ⓘ ${escapeHtml(label)}</a>`;
+    const placeInfoLink = (query, label = 'Select') => `<a class="place-info-link" href="${escapeHtml(mapsSearchUrl(query))}" target="_blank" rel="noopener noreferrer" aria-label="${escapeHtml(label)}: ${escapeHtml(query)}">ⓘ ${escapeHtml(label)}</a>`;
     const historyPrompts = {
       historian: (place, location) => `I am visiting ${place} in ${location}.
 
@@ -504,9 +504,7 @@ Use current, reliable sources and cite them. Do not guess. Separate documented f
 
     const historyCompanionButtons = (place, location) => `<div class="history-actions" aria-label="History Companion options">
       <button type="button" class="history-companion-btn" data-history-mode="historian" data-history-place="${escapeHtml(place)}" data-history-location="${escapeHtml(location)}">🏛️ Ask the Historian</button>
-      <button type="button" class="history-companion-btn" data-history-mode="eyes" data-history-place="${escapeHtml(place)}" data-history-location="${escapeHtml(location)}">👥 Through Their Eyes</button>
-      <button type="button" class="history-companion-btn" data-history-mode="timeTravel" data-history-place="${escapeHtml(place)}" data-history-location="${escapeHtml(location)}">⏳ Time Travel</button>
-    </div>`;
+         </div>`;
     const cardMarkup = ([title, detail], options = {}) => {
  
 let infoLink = '';
