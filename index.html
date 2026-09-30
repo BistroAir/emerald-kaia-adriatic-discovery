@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#081b20">
   <title>Emerald Kaia · Adriatic Discovery</title>
+
+   
   <style>
     :root {
       color-scheme: dark;
@@ -148,7 +150,7 @@
     .place-info-link:focus-visible { outline: 2px solid var(--green); outline-offset: 3px; }
     .port-map-link { white-space: nowrap; }
     .port-actions { display: flex; flex-direction: column; align-items: flex-end; gap: 8px; }
-    .history-actions { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 9px; }
+  
     .history-companion-btn {
       display: inline-flex; align-items: center; padding: 7px 10px;
       border: 1px solid rgba(231, 200, 138, .55); border-radius: 5px;
@@ -203,12 +205,32 @@
       <p class="eyebrow">Emerald Kaia</p>
       <h1>Emerald Kaia · Adriatic Discovery</h1>
       <p class="subtitle">Premium Travel Companion — Your Independent Port-by-Port Guide</p>
+      <p class="version">
+          Version 1.0 · Stable Baseline · September 2026
+      </p>
     </div>
   </header>
   <nav class="navigation" aria-label="Port destinations">
     <div class="nav-inner" id="port-nav"></div>
   </nav>
   <main id="port-content" tabindex="-1" aria-live="polite"></main>
+  <section class="changelog">
+<h3>Version History</h3>
+ 
+<div class="change-entry">
+<strong>Version 1.0</strong>
+<span>September 2026</span>
+<ul>
+<li>Established stable travel companion framework.</li>
+<li>Added Adriatic cruise destinations and port guides.</li>
+<li>Integrated Google Maps place information links.</li>
+<li>Integrated Ask Historian launch links.</li>
+<li>Added transportation, food & drink, and official-source sections.</li>
+<li>Removed Save Travel Note and OneNote integration experiments.</li>
+<li>Designated as reusable template baseline.</li>
+</ul>
+</div>
+</section>
   <footer>Emerald Kaia · Adriatic Discovery</footer>
   <script>
     'use strict';
@@ -417,100 +439,28 @@
 
     const nav = document.getElementById('port-nav');
     const content = document.getElementById('port-content');
-    content.addEventListener('click', event => {
-      const button = event.target.closest('[data-history-place]');
-      if (!button) return;
-      launchHistoryCompanion(button.dataset.historyPlace, button.dataset.historyLocation, button.dataset.historyMode);
-    });
+
     const escapeHtml = value => String(value).replace(/[&<>"']/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char]);
     const mapsSearchUrl = query => `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`;
     const placeInfoLink = (query, label = 'Select') => `<a class="place-info-link" href="${escapeHtml(mapsSearchUrl(query))}" target="_blank" rel="noopener noreferrer" aria-label="${escapeHtml(label)}: ${escapeHtml(query)}">ⓘ ${escapeHtml(label)}</a>`;
-    const historyPrompts = {
-      historian: (place, location) => `I am visiting ${place} in ${location}.
+    const historianLink = place => `
+<a
+class="history-companion-btn"
+href="https://copilot.microsoft.com"
+target="_blank"
+rel="noopener noreferrer"
+aria-label="Ask Historian about ${escapeHtml(place)}">
+🏛️ Ask Historian
+</a>`;
 
-Act as my personal historian and an engaging, careful storyteller. Help me understand what I am seeing while I am standing here.
 
-Please explain:
-1. What this place or feature is and why it was created
-2. Who built, funded, used or controlled it
-3. What was happening locally and in the wider world at the time
-4. What daily life here may have been like, clearly separating documented facts from informed reconstruction
-5. The most important events or changes connected with it
-6. Architectural, artistic or archaeological details I should look for
-7. What has changed, survived, been rebuilt or restored
-8. What most visitors overlook
-9. How a person standing here in its most important historical period might have understood what they saw
 
-Use current, reliable sources and cite them. Do not guess. If evidence is disputed or uncertain, identify that clearly. End with five things I should look at right now.`,
 
-      eyes: (place, location) => `I am standing at ${place} in ${location}.
 
-Help me experience this place through the eyes of an ordinary person who encountered it during its most historically important period.
-
-First identify the most appropriate historical period and explain why you selected it. Then describe:
-1. What that person would likely have seen, heard and smelled
-2. Who else would have been present and what they were doing
-3. What the building, artwork, monument or public space meant to them
-4. How religion, politics, trade, class, guilds or civic identity shaped their understanding
-5. Which people, symbols, faces, inscriptions, colors or stories they may have recognized
-6. What might have inspired awe, pride, fear, devotion or curiosity
-7. How their experience differed from mine as a modern visitor
-8. What visible details today can still help me connect with that earlier experience
-
-Use current, reliable sources and cite them. Do not present imagination as fact. Clearly label documented evidence, scholarly interpretation and informed reconstruction. End with five details I should look at right now through that person's eyes.`,
-
-      timeTravel: (place, location) => `I am visiting ${place} in ${location}.
-
-Create a historically grounded time-travel experience for me. Choose the single most revealing year or narrow period in this place's history and explain why you chose it.
-
-Then guide me through the scene as if I had arrived there at that time:
-1. Establish the date, political setting and local circumstances
-2. Describe the appearance, colors, lighting, sounds, smells and movement around me
-3. Describe the people present, their clothing, work and social roles
-4. Explain how this place was being used at that moment
-5. Point out structures, artworks or features that existed then, including important things now lost or altered
-6. Identify an event, tension or everyday concern people there would have understood
-7. Compare the historical scene with what survives today
-8. Give me a short first-person walk-through, while clearly marking any informed reconstruction
-
-Use current, reliable sources and cite them. Do not guess. Separate documented facts, scholarly interpretation and sensory reconstruction. End with five surviving details that connect the present site to that historical moment.`
-    };
-
-    async function copyTextWithFallback(text) {
-      if (navigator.clipboard && window.isSecureContext) {
-        await navigator.clipboard.writeText(text); return true;
-      }
-      const textArea = document.createElement('textarea');
-      textArea.value = text; textArea.setAttribute('readonly', '');
-      textArea.style.position = 'fixed'; textArea.style.opacity = '0';
-      document.body.appendChild(textArea); textArea.select();
-      const copied = document.execCommand('copy'); textArea.remove(); return copied;
-    }
-
-    async function launchHistoryCompanion(place, location, mode = 'historian') {
-      const prompt = (historyPrompts[mode] || historyPrompts.historian)(place, location);
-      let copied = false;
-      try { copied = await copyTextWithFallback(prompt); }
-      catch (error) { console.warn('History Companion clipboard copy failed.', error); }
-      const copilotUrl = `https://copilot.microsoft.com/?q=${encodeURIComponent(prompt)}`;
-      const copilotWindow = window.open(copilotUrl, '_blank', 'noopener,noreferrer');
-      if (!copilotWindow) {
-        if (copied) alert('Your History Companion prompt was copied. Your browser blocked the new tab, so open Microsoft Copilot and paste the prompt.');
-        else window.location.href = copilotUrl;
-        return;
-      }
-      if (copied) window.setTimeout(() => alert('Copilot opened in a new tab. If the prompt does not appear automatically, paste the copied History Companion prompt into Copilot.'), 350);
-    }
-
-    const historyCompanionButtons = (place, location) => `<div class="history-actions" aria-label="History Companion options">
-      <button type="button" class="history-companion-btn" data-history-mode="historian" data-history-place="${escapeHtml(place)}" data-history-location="${escapeHtml(location)}">🏛️ Ask the Historian</button>
-         </div>`;
-    const cardMarkup = ([title, detail], options = {}) => {
- 
+const cardMarkup = ([title, detail], options = {}) => {
 let infoLink = '';
  
 if (options.linkPlaces) {
- 
 const label =
 options.category === 'food'
 ? '🍽 Learn More'
@@ -522,11 +472,18 @@ label
 );
 }
  
+const historian =
+options.historyCompanion
+? historianLink(title)
+: '';
+ 
+ 
 return `
 <li class="info-card">
 <strong>${escapeHtml(title)}</strong>
 <span>${escapeHtml(detail)}</span>
 ${infoLink}
+${historian}
 </li>
 `;
 };
@@ -567,7 +524,7 @@ ${infoLink}
               <li class="bus-destination">
                 <h3>${escapeHtml(destination.name)}</h3>
                 ${placeInfoLink(`${destination.name}, near Dubrovnik, Croatia`, 'Place information')}
-                ${historyCompanionButtons(destination.name, 'Dubrovnik-Neretva County, Croatia')}
+              
                 <p class="bus-facts"><span><strong>Travel time:</strong> ${escapeHtml(destination.minutes)} min</span><span><strong>Distance:</strong> ${escapeHtml(destination.distance)}</span><span><strong>Bus line:</strong> ${escapeHtml(destination.lines)}</span><span><strong>Typical fare:</strong> ${escapeHtml(destination.fare)}</span></p>
                 <p><strong>Official schedule:</strong> <a href="${escapeHtml(port.busSchedule)}" target="_blank" rel="noopener noreferrer">Libertas Dubrovnik</a></p>
                 <p><strong>Why it’s great</strong></p>
