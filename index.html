@@ -5,8 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#081b20">
   <title>Emerald Kaia · Adriatic Discovery</title>
-
-   
   <style>
     :root {
       color-scheme: dark;
@@ -171,6 +169,21 @@
     .bus-destination a { color: var(--green); text-underline-offset: 3px; }
     .bus-destination ul { margin: 7px 0 0; padding-left: 20px; color: var(--muted); font-size: .87rem; }
     .bus-footer-note { margin: 20px 0 0; color: var(--muted); font-size: .78rem; }
+    .tour-intro { max-width: 820px; margin: -12px 0 24px; color: var(--muted); }
+    .tour-summary { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 22px; }
+    .tour-summary span { padding: 7px 10px; border: 1px solid var(--line); border-radius: 999px; background: var(--navy-raised); color: var(--muted); font-size: .8rem; }
+    .tour-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin: 0; padding: 0; list-style: none; }
+    .tour-card { padding: 17px 18px; border: 1px solid var(--line); border-radius: 5px; background: var(--navy-raised); }
+    .tour-card h3 { margin: 5px 0 8px; color: var(--green); font: 500 1.24rem var(--serif); }
+    .tour-day { margin: 0; color: var(--gold); font-size: .76rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+    .tour-meta { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px 14px; margin: 12px 0; color: var(--muted); font-size: .84rem; }
+    .tour-meta strong { color: var(--ink); }
+    .tour-card ul { margin: 8px 0 0; padding-left: 20px; color: var(--muted); font-size: .87rem; }
+    .tour-status { display: inline-flex; margin-top: 4px; padding: 4px 8px; border: 1px solid var(--line); border-radius: 999px; font-size: .74rem; font-weight: 700; }
+    .tour-status.confirmed { border-color: rgba(98, 212, 155, .55); background: rgba(98, 212, 155, .08); color: var(--green); }
+    .tour-status.included { border-color: rgba(88, 166, 255, .5); background: rgba(88, 166, 255, .08); color: #8fc5ff; }
+    .tour-status.unavailable { border-color: rgba(231, 200, 138, .55); background: rgba(231, 200, 138, .08); color: var(--gold); }
+    .tour-map-link { display: inline-flex; align-items: center; margin-top: 12px; color: var(--green); font-size: .82rem; font-weight: 700; text-underline-offset: 3px; }
     .essential {
       margin-top: 36px;
       padding-top: 23px;
@@ -192,6 +205,8 @@
       .port-actions { align-items: flex-start; }
       .content-grid { grid-template-columns: 1fr; gap: 25px; }
       .card-list { grid-template-columns: 1fr; }
+      .tour-list { grid-template-columns: 1fr; }
+      .tour-meta { grid-template-columns: 1fr; }
     }
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; }
@@ -205,32 +220,12 @@
       <p class="eyebrow">Emerald Kaia</p>
       <h1>Emerald Kaia · Adriatic Discovery</h1>
       <p class="subtitle">Premium Travel Companion — Your Independent Port-by-Port Guide</p>
-      <p class="version">
-          Version 1.0 · Stable Baseline · September 2026
-      </p>
     </div>
   </header>
   <nav class="navigation" aria-label="Port destinations">
     <div class="nav-inner" id="port-nav"></div>
   </nav>
   <main id="port-content" tabindex="-1" aria-live="polite"></main>
-  <section class="changelog">
-<h3>Version History</h3>
- 
-<div class="change-entry">
-<strong>Version 1.0</strong>
-<span>September 2026</span>
-<ul>
-<li>Established stable travel companion framework.</li>
-<li>Added Adriatic cruise destinations and port guides.</li>
-<li>Integrated Google Maps place information links.</li>
-<li>Integrated Ask Historian launch links.</li>
-<li>Added transportation, food & drink, and official-source sections.</li>
-<li>Removed Save Travel Note and OneNote integration experiments.</li>
-<li>Designated as reusable template baseline.</li>
-</ul>
-</div>
-</section>
   <footer>Emerald Kaia · Adriatic Discovery</footer>
   <script>
     'use strict';
@@ -341,6 +336,69 @@
         activities: [['Krka National Park', 'Waterfalls, river scenery and boardwalk routes near Šibenik.'], ['Plitvice Lakes', 'UNESCO-listed lakes and waterfalls; allow a full day from the coast.'], ['Mljet National Park', 'Island lakes, forest paths and boat access to St. Mary’s islet.'], ['Brijuni National Park', 'Island landscapes and archaeological sites reached from Istria.']],
         transport: [['Krka from Šibenik', 'Road transfer to Skradin or Lozovac; transport and park-entry costs depend on the entrance and ticket selected. Verify your return transfer.'], ['Plitvice Lakes', 'Long road journey from the coast; allow a full day, reserve timed park entry and book return transport separately.'], ['Mljet via Sobra', 'Jadrolinija line 832 from Prapratno takes about 45 min. Check the 2026 fare, onward island transport and final return sailing.'], ['Brijuni from Fažana', 'Board at the town jetty · About 15 min by boat. Park ticket/visit booking required; departures vary by month, so reserve and confirm your return boat.']],
         food: [['Peka', 'Slow-cooked meat or seafood, best ordered ahead where available.'], ['Local olive oil', 'Istrian and Dalmatian oils make a regional tasting.'], ['Island cheese', 'Pag cheese is a distinctive sheep’s milk specialty.'], ['Regional wine', 'Try Istrian Malvazija or Dalmatian Pošip.']]
+      },
+      'selected-tours': {
+        name: 'Our Tours', region: 'Adriatic Cruise',
+        title: '🏆 Our Selected Tours',
+        intro: 'Included, confirmed and monitored excursions selected for our Adriatic cruise. Map links open the principal destination or tour area in Google Maps.',
+        tours: [
+          {
+            day: 'Day 3', location: 'Split, Croatia',
+            title: 'Walking Tour of Split with Meštrović Gallery',
+            type: 'Included Excursion', status: 'Included', statusClass: 'included', cost: 'Included',
+            duration: '4 hours 30 minutes', activityLevel: 'Moderate',
+            mapQuery: 'Meštrović Gallery, Split, Croatia',
+            highlights: ['Meštrović Gallery', 'Diocletian’s Palace', 'Cathedral of St. Domnius', 'Temple of Jupiter', 'Split Old Town']
+          },
+          {
+            day: 'Day 6', location: 'Piran and Strunjan, Slovenia',
+            title: 'Scenic Strunjan Trail and Countryside Flavors',
+            type: 'EmeraldACTIVE', status: 'Included', statusClass: 'included', cost: 'Included',
+            duration: '4 hours 15 minutes', activityLevel: 'Active',
+            mapQuery: 'Strunjan Landscape Park, Slovenia',
+            highlights: ['Strunjan Landscape Park', 'Cliff-top coastal trail', 'Strunjan Salt Pans', 'Padna village', 'Olive oil and truffle tastings']
+          },
+          {
+            day: 'Day 7', location: 'Venice, Italy',
+            title: 'Walking Tour of Venice with Doge’s Palace',
+            type: 'DiscoverMORE', status: 'Confirmed', statusClass: 'confirmed', cost: '$129 per person',
+            duration: '4 hours 30 minutes', activityLevel: 'Active',
+            mapQuery: 'Doge’s Palace, Venice, Italy',
+            highlights: ['St. Mark’s Square', 'Doge’s Palace', 'Golden Staircase', 'Bridge of Sighs', 'St. Mark’s Basilica exterior']
+          },
+          {
+            day: 'Day 8', location: 'Murano and Burano, Italy',
+            title: 'Murano with Glass Demonstration and Visit to Burano',
+            type: 'DiscoverMORE', status: 'Currently unavailable', statusClass: 'unavailable', cost: 'Not booked',
+            duration: '4 hours 30 minutes', activityLevel: 'Moderate',
+            mapQuery: 'Murano Glass Museum, Venice, Italy',
+            highlights: ['Murano glass demonstration', 'Glass showroom', 'Burano’s colorful houses', 'Historic lace-making tradition', 'Emerald Cruises contacted about availability']
+          },
+          {
+            day: 'Day 9', location: 'Rovinj, Croatia',
+            title: 'Walking Tour of Rovinj',
+            type: 'Included Excursion', status: 'Included', statusClass: 'included', cost: 'Included',
+            duration: '2 hours', activityLevel: 'Moderate',
+            mapQuery: 'Church of St. Euphemia, Rovinj, Croatia',
+            highlights: ['Medieval streets', 'Local history', 'St. Euphemia Church', 'Old Town architecture', 'Harbor atmosphere']
+          },
+          {
+            day: 'Day 10', location: 'Krka National Park, Croatia',
+            title: 'Krka National Park',
+            type: 'DiscoverMORE', status: 'Confirmed', statusClass: 'confirmed', cost: '$119 per person',
+            duration: '4 hours', activityLevel: 'Active',
+            mapQuery: 'Skradinski Buk, Krka National Park, Croatia',
+            highlights: ['Skradinski Buk waterfalls', 'Scenic pathways and viewpoints', 'Traditional watermill', 'Krka River boat cruise', 'Free time in Skradin']
+          },
+          {
+            day: 'Day 13', location: 'Hvar and Pakleni Islands, Croatia',
+            title: 'Speedboat Adventure to the Pakleni Islands',
+            type: 'DiscoverMORE', status: 'Confirmed', statusClass: 'confirmed', cost: '$235 per person',
+            duration: '4 hours', activityLevel: 'Active',
+            mapQuery: 'Pakleni Islands, Hvar, Croatia',
+            highlights: ['Hvar coastline', 'Milna village', 'Pakleni Islands', 'Swimming and snorkeling', 'Turquoise bays and hidden coves']
+          }
+        ]
       },
       'bus-travel-dubrovnik': {
         name: 'Bus Travel from Dubrovnik', region: 'June Day Trips',
@@ -489,6 +547,22 @@ ${historian}
 };
     const sectionMarkup = (title, entries, className = '', options = {}) => `<section class="content-section ${className}"><h3>${escapeHtml(title)}</h3><ul class="card-list ${className === 'basics' ? 'basics-list' : ''}">${entries.map(entry => cardMarkup(entry, options)).join('')}</ul></section>`;
     const sourceMarkup = portId => `<section class="source-section" aria-labelledby="source-title"><h3 id="source-title">Official schedules, tickets & visitor information</h3><ul class="source-list">${officialSources[portId].map(([label, url]) => `<li><a href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(label)}</a></li>`).join('')}</ul><p class="source-note">Official links reviewed 27 September 2026. Timetables, fares and admission details change; confirm with the operator or venue for your travel date.</p></section>`;
+    const tourMapLink = tour => `<a class="tour-map-link" href="${escapeHtml(mapsSearchUrl(tour.mapQuery))}" target="_blank" rel="noopener noreferrer" aria-label="View ${escapeHtml(tour.title)} on Google Maps">📍 View tour location</a>`;
+    const tourCardMarkup = tour => `
+      <li class="tour-card">
+        <p class="tour-day">${escapeHtml(tour.day)} · ${escapeHtml(tour.location)}</p>
+        <h3>${escapeHtml(tour.title)}</h3>
+        <span class="tour-status ${escapeHtml(tour.statusClass)}">${escapeHtml(tour.status)}</span>
+        <div class="tour-meta">
+          <span><strong>Type:</strong> ${escapeHtml(tour.type)}</span>
+          <span><strong>Cost:</strong> ${escapeHtml(tour.cost)}</span>
+          <span><strong>Duration:</strong> ${escapeHtml(tour.duration)}</span>
+          <span><strong>Activity:</strong> ${escapeHtml(tour.activityLevel)}</span>
+        </div>
+        <strong>Highlights</strong>
+        <ul>${tour.highlights.map(item => `<li>${escapeHtml(item)}</li>`).join('')}</ul>
+        ${tourMapLink(tour)}
+      </li>`;
 
     function renderPort(portId, updateUrl = true) {
       const port = ports[portId];
@@ -512,6 +586,27 @@ ${historian}
           activeTab.scrollIntoView({ block: 'nearest', inline: 'nearest', behavior: reduceMotion ? 'auto' : 'smooth' });
         }
       }
+      if (port.tours) {
+        const includedCount = port.tours.filter(tour => tour.statusClass === 'included').length;
+        const confirmedCount = port.tours.filter(tour => tour.statusClass === 'confirmed').length;
+        const unavailableCount = port.tours.filter(tour => tour.statusClass === 'unavailable').length;
+        content.innerHTML = `
+          <header class="port-heading">
+            <div><p class="eyebrow">${escapeHtml(port.region)} · Personal Itinerary</p><h2>${escapeHtml(port.title)}</h2></div>
+            <div class="port-actions"><span class="port-mark">Adriatic Discovery</span>${placeInfoLink('Adriatic Sea cruise ports', 'View cruise region')}</div>
+          </header>
+          <p class="tour-intro">${escapeHtml(port.intro)}</p>
+          <div class="tour-summary" aria-label="Tour summary">
+            <span>${includedCount} included</span>
+            <span>${confirmedCount} confirmed</span>
+            <span>${unavailableCount} unavailable / monitoring</span>
+          </div>
+          <section aria-label="Selected cruise tours">
+            <ul class="tour-list">${port.tours.map(tourCardMarkup).join('')}</ul>
+          </section>`;
+        return;
+      }
+
       if (port.busDestinations) {
         content.innerHTML = `
           <header class="port-heading">
